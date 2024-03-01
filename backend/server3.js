@@ -3,14 +3,11 @@ const { errorHandler } = require('./middleware/errorMiddleware')
 const dotenv = require('dotenv').config()
 const colors = require('colors')
 const connectDB = require('./database/db')
-const port = process.env.PORT 
+const port = 5002 
 
 connectDB()
 
 const app = express()
-
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
 
 // Custom logging middleware
 app.use((req, res, next) => {
@@ -18,9 +15,13 @@ app.use((req, res, next) => {
     next();
   });
 
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+
 app.get('/', (req, res) => {
     res.send(`hello from ${port}`);
   });
+
 
 app.use('/api/link',require('./routes/linkRoutes'))
 app.use('/api/user',require('./routes/userRoutes'))

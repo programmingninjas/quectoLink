@@ -1,0 +1,13 @@
+config:
+  target: 'http://localhost/api/link/6040b1e'  
+  phases:
+    - duration: 60  
+      arrivalRate: 100  
+  defaults:
+    headers:
+      User-Agent: 'Artillery Load Tester'
+
+scenarios:
+  - flow:
+      - get:
+          url: '/'
