@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {register,reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import { Button } from "@/components/ui/button"
 
 
 function Register() {
@@ -20,7 +21,7 @@ function Register() {
   const dispatch = useDispatch()
   const {user,isLoading,isError,isSuccess,message} = useSelector((state)=>state.auth)
 
-  const onChange = (e)=>{
+  const onChange = (e:any)=>{
     setFormData((prevState)=>({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -40,7 +41,7 @@ function Register() {
 
   },[user,isError,isSuccess,message,navigate,dispatch])
 
-  const onSubmit = (e)=>{
+  const onSubmit = (e:any)=>{
     e.preventDefault()
     if (password!==confirm_password){
       toast.error("Passwords do not match")
@@ -51,7 +52,7 @@ function Register() {
         email,
         password
       }
-      dispatch(register(userData))
+      dispatch(register(userData) as any)
     }
   }
   if (isLoading){
@@ -79,7 +80,7 @@ function Register() {
           <input type='password' className='form-control' id='confirm_password' name='confirm_password' value={confirm_password} placeholder='Confirm Your Password' onChange={onChange}/>
           </div>
           <div className='form-group'>
-            <button type='submit' className='btn btn-block'>Submit</button>
+            <Button type='submit' className='btn btn-block'>Submit</Button>
           </div>
         </form>
       </section>

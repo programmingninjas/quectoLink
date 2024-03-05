@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {login,reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import {Button } from "@/components/ui/button"
 
 
 function Login() {
@@ -13,7 +14,7 @@ function Login() {
     password:''
   })
   const {email,password} = formData
-  const onChange = (e)=>{
+  const onChange = (e:any)=>{
     setFormData((prevState)=>({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -32,22 +33,21 @@ function Login() {
     }
 
   },[user,isError,isSuccess,message,navigate,dispatch])
-  const onSubmit = (e)=>{
+const onSubmit = (e:any)=>{
     e.preventDefault()
-      const userData = {
-        email,
-        password
-      }
-      dispatch(login(userData))
-      dispatch(reset())
-  }
-  if (isLoading){
+        const userData = {
+            email,
+            password
+        }
+        dispatch(login(userData) as any) // Fix dispatch call by casting the action type as 'any'
+        dispatch(reset())
+}
+if (isLoading){
     return (<Spinner/>)
-  }
+}
 
   return (
     <>
-    <section className='heading'>
       <h1>
         <FaSignInAlt /> Login
       </h1>
@@ -61,11 +61,10 @@ function Login() {
           <input type='password' className='form-control' id='password' name='password' value={password} placeholder='Enter Your Password' onChange={onChange}/>
           </div>
           <div className='form-group'>
-            <button type='submit' className='btn btn-block'>Submit</button>
+            <Button type='submit' className='btn btn-block'>Submit</Button>
           </div>
         </form>
       </section>
-    </section>
     </>
   )
 }
