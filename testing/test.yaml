@@ -1,7 +1,7 @@
 config:
   target: 'http://localhost/api/link/6040b1e'  
   phases:
-    - duration: 60  
+    - duration: 10  
       arrivalRate: 100  
   defaults:
     headers:

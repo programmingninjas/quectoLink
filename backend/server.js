@@ -1,30 +1,33 @@
-const express = require('express')
-const { errorHandler } = require('./middleware/errorMiddleware')
-const dotenv = require('dotenv').config()
-const colors = require('colors')
-const connectDB = require('./database/db')
-const port = process.env.PORT 
+const express = require('express');
+const { errorHandler } = require('./middleware/errorMiddleware');
+const { loggerMiddleware } = require('./middleware/loggerMiddleware');
+const dotenv = require('dotenv').config();
+const colors = require('colors');
+const connectDB = require('./database/db');
+const cors = require('cors');
+const { removeToken } = require('./zookeeper/zookeeper');
+require('./zookeeper/zookeeper').connectZK();
+const port = process.env.PORT;
 
-connectDB()
+connectDB();
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
-// Custom logging middleware
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
-    next();
-  });
+app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send(`hello from ${port}`);
-  });
+app.use(loggerMiddleware);
 
-app.use('/api/link',require('./routes/linkRoutes'))
-app.use('/api/user',require('./routes/userRoutes'))
+app.use('/api/link',require('./routes/linkRoutes'));
+app.use('/api/user',require('./routes/userRoutes'));
 
-app.use(errorHandler)
+app.get('/api/deleteToken',async (req,res)=>{
+    await removeToken();
+    res.status(200).json({message:"Token Removed"});
+});
 
-app.listen(port,()=>console.log(`Server started on port ${port}`))
+app.use(errorHandler);
+
+app.listen(port,()=>console.log(`Server started on port ${port}`));

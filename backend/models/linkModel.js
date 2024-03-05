@@ -15,6 +15,10 @@ const linkSchema = mongoose.Schema(
             type:String,
             required: [true,'Please add a long url'],
         },
+        visits:{
+            type:Number,
+            required: [true,'Please add visits'],
+        },
         expires:{
             type:Date,
             required: [true,'Please add a expiry'],

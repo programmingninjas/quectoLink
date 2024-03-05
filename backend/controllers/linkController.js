@@ -1,12 +1,11 @@
-const asyncHandler = require("express-async-handler")
-const Link = require("../models/linkModel")
-const User = require("../models/userModel")
-const redisClient = require("../cache/client")
-const uuid = require('uuid')
-const mongoose = require('mongoose')
+const asyncHandler = require("express-async-handler");
+const Link = require("../models/linkModel");
+const User = require("../models/userModel");
+const redisClient = require("../cache/client");
+const { range, base62encoding, getTokenRange } = require('../zookeeper/zookeeper');
 
 // @desc  Get Link
-// @route Get /api/Link
+// @route Get /api/Link/:hash
 // @access Public
 
 const getLink = asyncHandler( async (req,res) => {
@@ -16,8 +15,8 @@ const getLink = asyncHandler( async (req,res) => {
     // If not in Cache, hitting DB
     const link = await Link.findOne({short:req.params.hash});
     // Storing in Cache
-    await redisClient.set(req.params.hash,JSON.stringify(link));
-    await redisClient.expire(req.params.hash,120);
+    await redisClient.set(req.params.hash,JSON.stringify({long:link.long,visits:link.visits}));
+    await redisClient.expire(req.params.hash,600);
     res.status(200).json(link)
 })
 
@@ -29,31 +28,36 @@ const setLink = asyncHandler( async (req,res) => {
         res.status(400)
         throw new Error("Please add longUrl field")
     }
-    // Looking in Cache
-    const cachedValue = await redisClient.get(req.body.longUrl);
-    if (cachedValue) return res.status(200).json(JSON.parse(cachedValue));
-    // If not in Cache, hitting DB
-    const result = await Link.findOne({long:req.body.longUrl});
-    if (result){
-        // Storing in Cache
-        await redisClient.set(req.body.longUrl,JSON.stringify(result));
-        await redisClient.expire(req.body.longUrl,120);
-        res.status(200).json(result.short);
-        return;
+    // [Old] Collisions can occur
+
+            /*const uuidGen = uuid.v4();
+            const uuidString = uuidGen.toString();
+            const shortUrl = uuidString.substring(0,7);
+            const link = await Link.create({
+                long: req.body.longUrl,
+                short: shortUrl,
+                expires: new Date(new Date().getTime() + (365 * 24 * 60 * 60 * 1000)),
+                user: req.body.id
+            })*/
+
+    // [New] Collisions Free
+
+    //Checking if current counter is in the range and the range exists for the server
+    if (range.cur < range.end - 1 && range.cur != 0) {
+        range.cur++
+    } else {
+        await getTokenRange();
+        range.cur++;
     }
-    //If not in DB, Generate it and store in DB
-    const uuidGen = uuid.v4();
-    const uuidString = uuidGen.toString();
-    const shortUrl = uuidString.substring(0,7);
+    console.log(`Counter Value: ${range.cur}`);
+    const shortUrl = base62encoding(range.cur-1);
     const link = await Link.create({
         long: req.body.longUrl,
         short: shortUrl,
+        visits: 0,
         expires: new Date(new Date().getTime() + (365 * 24 * 60 * 60 * 1000)),
-        user: new mongoose.Types.ObjectId("65e1c9923bbda16a4a5a0277")
-    })
-    // Storing in Cache
-    await redisClient.set(req.body.longUrl,JSON.stringify(link));
-    await redisClient.expire(req.body.longUrl,120);
+        user: req.body.id
+    });
     res.status(200).json(link)
 })
 
