@@ -1,5 +1,5 @@
 config:
-  target: 'http://localhost/api/link/6040b1e'  
+  target: 'http://localhost/api/link/:hash'  
   phases:
     - duration: 10  
       arrivalRate: 100  
