@@ -68,6 +68,11 @@
   }
 }
 
+:root{
+  --toastify-color-success: #000000;
+  --toastify-color-error: #000000;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -167,6 +172,33 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+  padding: 0 20px;
+}
+
+/* Width and height of the scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(49, 49, 49);
 }
  
 @layer base {

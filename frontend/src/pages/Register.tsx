@@ -19,7 +19,7 @@ function Register() {
   
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {user,isLoading,isError,isSuccess,message} = useSelector((state)=>state.auth)
+  const {user,isLoading,isError,isSuccess,message} = useSelector((state:any)=>state.auth)
 
   const onChange = (e:any)=>{
     setFormData((prevState)=>({
@@ -60,11 +60,9 @@ function Register() {
   }
   return (
     <>
-    <section className='heading'>
-      <h1>
+    <section className='flex heading gap-4 items-center justify-center'>
         <FaUser /> Register
-      </h1>
-      <p>Please create an account</p>
+    </section>
       <section className='form'>
         <form onSubmit={onSubmit}>
           <div className='form-group'>
@@ -84,7 +82,6 @@ function Register() {
           </div>
         </form>
       </section>
-    </section>
     </>
   )
 }

@@ -22,7 +22,7 @@ function Login() {
   }
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {user,isLoading,isError,isSuccess,message} = useSelector((state)=>state.auth)
+  const {user,isLoading,isError,isSuccess,message} = useSelector((state:any)=>state.auth)
   useEffect(()=>{
 
     if (isError){
@@ -48,10 +48,9 @@ if (isLoading){
 
   return (
     <>
-      <h1>
+    <section className='flex heading gap-4 items-center justify-center'>
         <FaSignInAlt /> Login
-      </h1>
-      <p>Please Login</p>
+    </section>
       <section className='form'>
         <form onSubmit={onSubmit}>
           <div className='form-group'>
