@@ -44,3 +44,7 @@ docker-compose up --build
 4. Access the application by visiting `http://localhost:3000` in your web browser.
 
 This approach streamlines the setup process by utilizing Docker Compose to handle the dependencies and configurations required to run QuectoLink.
+
+## Reference
+1. https://systemdesign.one/url-shortening-system-design
+2. https://youtu.be/JQDHz72OA3c?si=flg2FZ2JtMkwP6TW
