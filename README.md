@@ -12,6 +12,7 @@ QuectoLink is a scalable and distributed URL shortener service that allows users
 - Utilizes ZooKeeper for distributed coordination and consensus.
 - Nginx used for load balancing to distribute incoming traffic across multiple servers.
 - Containerized with Docker for easy deployment and scalability.
+- Implemented GitHub Actions for automatic deployment to virtual machines upon code changes, ensuring continuous integration and delivery.
 
 ## Technologies Used
 
@@ -20,6 +21,7 @@ QuectoLink is a scalable and distributed URL shortener service that allows users
 - **ZooKeeper:** Distributed coordination service for maintaining configuration information, naming, and providing distributed synchronization.
 - **Nginx:** High-performance web server and reverse proxy for load balancing.
 - **Docker:** Containerization platform for packaging the application and its dependencies into standardized units for deployment.
+- **GitHub Actions:** Automated workflow tool integrated with GitHub repository for continuous integration and deployment, ensuring seamless deployment to virtual machines upon code changes.
 
 ## Getting Started
 
