@@ -1,23 +1,32 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux'
 
 export default function Dashboard() {
   const [shortUrl, setShortUrl] = useState<string>("Shortened URL");
   const [longUrl, setLongUrl] = useState<string>("");
-  const user = useSelector((state:any) => state.auth?.user);
+  const user = useSelector((state: any) => state.auth?.user);
   const navigate = useNavigate();
-  const authToken = user?.token;
-  const id = user?._id;
+  let authToken = user?.token;
+  let id = user?._id;
   const handleSubmit = async () => {
     if (!user) {
       navigate('/login');
       return;
     }
     try {
+      if (!user.token) {
+        const userDataString = localStorage.getItem('user');
+        if (userDataString !== null) {
+          const userData = JSON.parse(userDataString);
+          const { token, _id } = userData;
+          authToken = token;
+          id = _id;
+        }
+      }
       const response = await fetch('http://localhost:5000/api/link', {
         method: 'POST',
         headers: {
@@ -60,10 +69,10 @@ export default function Dashboard() {
               <Button className="h-10 px-6 text-sm font-medium" onClick={handleSubmit}>Shorten</Button>
             </div>
             <div className="flex items-center gap-2">
-              <Link to={'/'+shortUrl} className="flex items-center justify-center h-full rounded-md w-[200px] p-2 font-mono shadow dark:placeholder-gray-300 hover:text-slate-500">
+              <Link to={'/' + shortUrl} className="flex items-center justify-center h-full rounded-md w-[200px] p-2 font-mono shadow dark:placeholder-gray-300 hover:text-slate-500">
                 {shortUrl}
               </Link>
-              <Button className="h-10 px-6 text-sm font-medium" onClick={()=>{navigator.clipboard.writeText(window.location.href+shortUrl);toast.success("Copied")}}>Copy to Clipboard</Button>
+              <Button className="h-10 px-6 text-sm font-medium" onClick={() => { navigator.clipboard.writeText(window.location.href + shortUrl); toast.success("Copied") }}>Copy to Clipboard</Button>
             </div>
           </div>
         </div>

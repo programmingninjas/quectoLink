@@ -10,7 +10,6 @@ function Header() {
     const location = useLocation();
     const dispatch = useDispatch();
     const { user } = useSelector((state:any) => state.auth)
-    console.log(user)
     const onLogout = () => {
         dispatch(logout() as any)
         dispatch(reset())
