@@ -1,5 +1,8 @@
 # QuectoLink - Scalable and Distributed URL Shortener Service
 
+![Zookeeper](https://github.com/programmingninjas/quectoLink/assets/67486606/33e55978-c2af-4b51-9b15-8d85d525f45b)
+
+
 QuectoLink is a scalable and distributed URL shortener service that allows users to shorten long URLs into more manageable and shareable links. The name "Quecto" is derived from the term for the smallest unit in metric system, reflecting the service's ability to efficiently shorten URLs.
 
 ## Features
