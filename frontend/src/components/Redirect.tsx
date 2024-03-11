@@ -10,7 +10,7 @@ const RedirectPage = () => {
   useEffect(() => {
     const resolveShortURL = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/link/${hash}`);
+        const response = await fetch(`http://quecto.fr.to/api/link/${hash}`);
         if (response.status == 404) {
           toast.error('Failed to resolve URL');
           navigate('/');
