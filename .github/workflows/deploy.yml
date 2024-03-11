@@ -1,0 +1,19 @@
+name: Pull changes and Run docker-compose on Azure VM
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: SSH into Azure VM, pull changes, and run docker-compose
+      run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd quectoLink && git pull origin master && docker-compose up --build'
+      env:
+        AZURE_VM_HOST: ${{ secrets.AZURE_VM_HOST }}
+        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
