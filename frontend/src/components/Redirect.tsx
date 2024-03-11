@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from './Spinner';
 import { toast } from 'react-toastify';
 
@@ -17,10 +17,16 @@ const RedirectPage = () => {
           return;
         }
         const data = await response.json();
-        window.location.replace(data.long); // Redirect the user to the long URL
+        let url = data.long;
+        // Check if the URL starts with http:// or https://
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+          // If not, assume it's a relative path and prepend with http://
+          url = "https://" + url;
+        }
+        window.location.replace(url); // Redirect the user to the long URL
       } catch (e) {
         toast.error('Error');
-        navigate('/'); 
+        navigate('/');
       }
     };
 
