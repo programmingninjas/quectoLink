@@ -22,8 +22,7 @@ jobs:
         ssh-keyscan -H ${{ secrets.AZURE_VM_HOST }} >> ~/.ssh/known_hosts
 
     - name: SSH into Azure VM, pull changes, and run docker-compose
-      run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd quectoLink && git pull origin master && docker-compose up --build'
+      run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd quectoLink && git pull origin master && docker-compose up -d --build'
       env:
         AZURE_VM_HOST: ${{ secrets.AZURE_VM_HOST }}
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
