@@ -42,11 +42,14 @@ git clone https://github.com/programmingninjas/quectolink.git
 ```bash
 cd quectolink
 ```
-3. Build Docker images and start containers for all services:
+
+3. Navigate to backend and modify .env file
+
+4. Build Docker images and start containers for all services:
 ```bash
 docker-compose up --build
 ```
-4. Access the application by visiting `http://localhost:3000` in your web browser.
+5. Access the application by visiting `http://localhost:3000` in your web browser.
 
 This approach streamlines the setup process by utilizing Docker Compose to handle the dependencies and configurations required to run QuectoLink.
 
