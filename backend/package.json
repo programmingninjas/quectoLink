@@ -1,7 +1,7 @@
 {
-  "name": "dcars",
+  "name": "quectolink",
   "version": "1.0.0",
-  "description": "A platform to sell and buy cars in an authentic way",
+  "description": "A distributed and scalable system for url shortening",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

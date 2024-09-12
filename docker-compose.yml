@@ -1,4 +1,4 @@
-version: '3.3'
+
 services:
   backend:
     build: ./backend
@@ -7,9 +7,9 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "80:80"
   cache:
-    image: redis
+    image: redis:alpine
     ports:
       - "6379:6379"
   zookeeper:

@@ -27,7 +27,7 @@ export default function Dashboard() {
           id = _id;
         }
       }
-      const response = await fetch('https://quecto.fr.to/api/link', {
+      const response = await fetch('http://localhost:5000/api/link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

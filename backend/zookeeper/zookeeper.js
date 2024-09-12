@@ -1,6 +1,6 @@
 const zookeeper = require('node-zookeeper-client');
 
-const zkClient = zookeeper.createClient('localhost:2181');
+const zkClient = zookeeper.createClient('zookeeper:2181');
 
 let range = {
     start: 0,
