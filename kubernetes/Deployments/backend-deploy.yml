@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+  labels:
+    name: backend-deploy
+    app: quectolink
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: backend-pod
+      app: quectolink
+  template:
+    metadata:
+      name: backend-pod
+      labels:
+        name: backend-pod
+        app: quectolink
+    spec:
+      containers:
+       - name: backend
+         image: programmingninjas/quectolink-backend
+         env:
+         - name: MONGO_URI
+           value: mongodb://mongo:27017/quectolink
+         - name: PORT
+           value: "5000"
+         - name: JWT_SECRET
+           value: oppai
+         ports:
+          - containerPort: 5000

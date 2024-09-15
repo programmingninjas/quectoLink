@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper-set
+  labels:
+    name: zookeeper-set
+    app: quectolink
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      name: zookeeper-pod
+      app: quectolink
+  template:
+    metadata:
+      name: zookeeper-pod
+      labels:
+        name: zookeeper-pod
+        app: quectolink
+    spec:
+      containers:
+      - name: zookeeper
+        image: zookeeper
+        ports:
+        - containerPort: 2181

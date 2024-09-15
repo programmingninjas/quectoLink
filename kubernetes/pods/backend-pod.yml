@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-pod
+  labels:
+    name: backend-pod
+    app: quectolink
+spec:
+  containers:
+   - name: backend
+     image: programmingninjas/quectolink-backend
+     env:
+      - name: MONGO_URI
+        value: mongodb+srv://ayank007:ayank007@cluster0.sgiicin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - name: PORT
+        value: "5000"
+      - name: JWT_SECRET
+        value: oppai
+     ports:
+      - containerPort: 5000

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cache-set
+  labels:
+    name: cache-set
+    app: quectolink
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      name: cache-pod
+      app: quectolink
+  template:
+    metadata:
+      name: cache-pod
+      labels:
+        name: cache-pod
+        app: quectolink
+    spec:
+      containers:
+      - name: cache
+        image: redis:alpine
+        ports:
+        - containerPort: 6379

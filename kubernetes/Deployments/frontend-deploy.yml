@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+  labels:
+    name: frontend-deploy
+    app: quectolink
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: frontend-pod
+      app: quectolink
+  template:
+    metadata:
+      name: frontend-pod
+      labels:
+        name: frontend-pod
+        app: quectolink
+    spec:
+      containers:
+      - name: frontend
+        image: programmingninjas/quectolink
+        env:
+        - name: IP
+          value: "192.168.49.2:30004"
+        ports:
+        - containerPort: 80
