@@ -16,3 +16,7 @@ services:
     image: zookeeper
     ports:
       - "2181:2181"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
