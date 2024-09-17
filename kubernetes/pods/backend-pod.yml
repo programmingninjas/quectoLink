@@ -11,7 +11,7 @@ spec:
      image: programmingninjas/quectolink-backend
      env:
       - name: MONGO_URI
-        value: mongodb+srv://ayank007:ayank007@cluster0.sgiicin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+        value: mongodb://mongo:27017/quectolink
       - name: PORT
         value: "5000"
       - name: JWT_SECRET
