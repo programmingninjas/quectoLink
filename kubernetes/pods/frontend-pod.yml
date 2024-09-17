@@ -11,6 +11,7 @@ spec:
     image: programmingninjas/quectolink
     env:
     - name: IP
-      value: "localhost:30005"
+    # Exposed IP:PORT for your backend service
+      value: "IP:PORT"
     ports:
     - containerPort: 80
