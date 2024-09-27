@@ -21,12 +21,10 @@ spec:
       containers:
        - name: backend
          image: programmingninjas/quectolink-backend
-         env:
-         - name: MONGO_URI
-           value: mongodb://mongo:27017/quectolink
-         - name: PORT
-           value: "5000"
-         - name: JWT_SECRET
-           value: oppai
+         envFrom:
+          - configMapRef:
+              name: backend-config
+          - secretRef:
+              name: quectolink-secret
          ports:
           - containerPort: 5000
