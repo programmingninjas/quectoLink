@@ -1,28 +1,27 @@
 pipeline {
     agent any
- 
+
     environment {
         MONGO_URI = 'mongodb://mongo:27017/quectolink'
         PORT = '5000'
         JWT_SECRET = credentials('JWT')
     }
- 
+
     stages {
         stage('Get Version') {
             steps {
-                 script {
-                  def backend = readJSON file: 'backend/package.json'
-                  env.BACKEND_VERSION = backend.version
-                  echo "Backend Version from package.json: ${env.BACKEND_VERSION}"
-               }
-                 script {
+                script {
+                    def backend = readJSON file: 'backend/package.json'
+                    env.BACKEND_VERSION = backend.version
+                    echo "Backend Version from package.json: ${env.BACKEND_VERSION}"
+
                     def frontend = readJSON file: 'frontend/package.json'
                     env.FRONTEND_VERSION = frontend.version
                     echo "Frontend Version from package.json: ${env.FRONTEND_VERSION}"
                 }
             }
         }
- 
+
         stage('Build') {
             parallel {
                 stage('Build Backend') {
@@ -45,7 +44,7 @@ pipeline {
                 }
             }
         }
- 
+
         stage('Deploy') {
             steps {
                 script {
@@ -53,7 +52,8 @@ pipeline {
                 }
             }
         }
-     
+    }
+
     post {
         success {
             echo 'Deployment successful!'
@@ -62,5 +62,4 @@ pipeline {
             echo 'Deployment failed!'
         }
     }
-  }
 }
