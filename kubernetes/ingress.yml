@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: quectolink-ingress
+spec:
+  tls:
+  - hosts:
+    - quecto.fr.to
+    secretName: userapi-tls
+  ingressClassName: nginx
+  rules:
+  - host: "quecto.fr.to"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
+            name: backend
+            port:
+              number: 5000
+
