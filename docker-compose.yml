@@ -1,14 +1,14 @@
 services:
   backend:
-    build: ./backend
-    ports:
-      - "5000:5000"
+    image: programmingninjas/quectolink-backend:latest
     environment:
-      - MONGO_URI=mongodb://mongo:27017/your_db_name
-      - PORT=5000
-      - JWT_SECRET=your_jwt_secret
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "${PORT}:${PORT}"
   frontend:
-    build: ./frontend
+    image: programmingninjas/quectolink:latest
     ports:
       - "80:80"
   cache:
