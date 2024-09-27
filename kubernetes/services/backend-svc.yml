@@ -6,11 +6,9 @@ metadata:
     name: backend-svc
     app: quectolink
 spec:
-  type: NodePort
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30004
   selector:
     name: backend-pod
     app: quectolink
