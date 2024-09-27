@@ -6,7 +6,7 @@ metadata:
     name: zookeeper-set
     app: quectolink
 spec:
-  replicas: 1  
+  replicas: 1
   selector:
     matchLabels:
       name: zookeeper-pod
@@ -18,8 +18,15 @@ spec:
         name: zookeeper-pod
         app: quectolink
     spec:
+      volumes:
+      - name: zookeeper-storage
+        persistentVolumeClaim:
+          claimName: zookeeper-claim
       containers:
       - name: zookeeper
         image: zookeeper
         ports:
         - containerPort: 2181
+        volumeMounts:
+        - name: zookeeper-storage
+          mountPath: "/data"
