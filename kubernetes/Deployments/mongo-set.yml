@@ -6,7 +6,7 @@ metadata:
     name: mongo-set
     app: quectolink
 spec:
-  replicas: 1  
+  replicas: 1
   selector:
     matchLabels:
       name: mongo-pod
@@ -18,8 +18,15 @@ spec:
         name: mongo-pod
         app: quectolink
     spec:
+      volumes:
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-claim
       containers:
       - name: mongo
         image: mongo
         ports:
         - containerPort: 27017
+        volumeMounts:
+        - name: mongo-storage
+          mountPath: "/data/db"
