@@ -4,7 +4,7 @@ pipeline {
     environment {
         MONGO_URI = 'mongodb://mongo:27017/quectolink'
         PORT = '5000'
-        JWT_SECRET = credentials('JWT')
+        JWT_SECRET = "Hello"
     }
 
     stages {
