@@ -21,9 +21,8 @@ spec:
       containers:
       - name: frontend
         image: programmingninjas/quectolink
-        env:
-        # Public IP:PORT of your backend
-        - name: IP
-          value: "192.168.49.2:30004"
+        envFrom:
+         - configMapRef:
+             name: frontend-config
         ports:
         - containerPort: 80
