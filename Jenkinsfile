@@ -65,7 +65,7 @@ pipeline {
                         export MONGO_URI='${MONGO_URI}' 
                         export PORT='${PORT}' 
                         export JWT_SECRET='${JWT_SECRET}'
-                        docker compose up -d
+                        sudo docker compose up -d
                     EOF
                     """
                 }
