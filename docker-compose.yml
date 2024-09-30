@@ -10,6 +10,8 @@ services:
       - "${PORT}:${PORT}"
   frontend:
     image: programmingninjas/quectolink:${FRONTEND_VERSION}
+    environment:
+      - IP=${REMOTE}
     ports:
       - "80:80"
   cache:
