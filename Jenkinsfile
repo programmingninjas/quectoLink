@@ -6,8 +6,8 @@ pipeline {
     environment {
         MONGO_URI = 'mongodb://mongo:27017/quectolink'
         PORT = '5000'
-        JWT_SECRET = "Hello"
-        REMOTE = "103.189.173.46"
+        JWT_SECRET = 'Hello'
+        REMOTE = '103.189.173.46'
     }
 
     stages {
@@ -19,6 +19,7 @@ pipeline {
                 }
             }
         }
+
         stage('Get Version') {
             steps {
                 script {
@@ -63,12 +64,13 @@ pipeline {
                         def remoteCommands = """
                             cd quectoLink
                             git pull origin master
-                            sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' docker compose up -d --build
+                            sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' docker-compose up -d --build
                         """
                         sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.REMOTE} '${remoteCommands}'"
-                        sh "echo Deployed!"
+                        echo 'Deployed!'
                     }
                 }
+            }
         }
     }
 
