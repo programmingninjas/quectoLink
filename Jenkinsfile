@@ -57,11 +57,13 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                script {
+                sshagent(["ssh-agent"]) {
                     sh """
+                    git clone https://github.com/programmingninjas/quectoLink.git
+                    cd quectoLink
                     export MONGO_URI='${MONGO_URI}' 
                     export PORT='${PORT}' 
-                    export JWT_SECRET='${JWT_SECRET}' 
+                    export JWT_SECRET='${JWT_SECRET}'
                     docker compose up -d
                     """
                 }
