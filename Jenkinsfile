@@ -62,13 +62,12 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ssh-agent', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     script {
-                        def remoteCommands = """
+                        def commands = """
                             cd quectoLink
                             git pull origin master
                             sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' BACKEND_VERSION='${BACKEND_VERSION}' FRONTEND_VERSION='${FRONTEND_VERSION}' API='${API}' docker compose up -d --build
                         """
-                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.REMOTE} '${remoteCommands}'"
-                        echo 'Deployed!'
+                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${REMOTE} '${commands}'"
                     }
                 }
             }
