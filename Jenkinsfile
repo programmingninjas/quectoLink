@@ -8,6 +8,7 @@ pipeline {
         PORT = '5000'
         JWT_SECRET = 'Hello'
         REMOTE = '103.189.173.46'
+        API = "http://103.189.173.46"
     }
 
     stages {
@@ -49,7 +50,7 @@ pipeline {
                     steps {
                         script {
                             dir('frontend') {
-                                sh "docker build -t programmingninjas/quectolink:${env.FRONTEND_VERSION} ."
+                                sh "IP=${API} docker build -t programmingninjas/quectolink:${env.FRONTEND_VERSION} ."
                             }
                         }
                     }
@@ -64,7 +65,7 @@ pipeline {
                         def remoteCommands = """
                             cd quectoLink
                             git pull origin master
-                            sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' BACKEND_VERSION='${BACKEND_VERSION}' FRONTEND_VERSION='${FRONTEND_VERSION}' REMOTE='${REMOTE}' docker compose up -d --build
+                            sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' BACKEND_VERSION='${BACKEND_VERSION}' FRONTEND_VERSION='${FRONTEND_VERSION}' docker compose up -d --build
                         """
                         sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.REMOTE} '${remoteCommands}'"
                         echo 'Deployed!'
