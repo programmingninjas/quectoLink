@@ -63,6 +63,7 @@ pipeline {
                         cd quectoLink
                         git pull origin master
                         sudo MONGO_URI='${MONGO_URI}' PORT='${PORT} JWT_SECRET='${JWT_SECRET}' docker compose up -d --build
+                    EOF
                     """
                 }
             }
