@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set a default value for IP if not provided
-: ${IP:=localhost:5000}
+: ${IP:=http://localhost:5000}
 
 # Find the file starting with index and ending with .js inside dist/assets
 file=$(find /usr/share/nginx/html/assets -type f -name 'index*.js')
