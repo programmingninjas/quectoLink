@@ -59,13 +59,14 @@ pipeline {
             steps {
                 sshagent(["ssh-agent"]) {
                     sh """
-                    ssh -tt -o StrictHostKeyChecking=no ubuntu@103.189.173.46
-                    git clone https://github.com/programmingninjas/quectoLink.git
-                    cd quectoLink
-                    export MONGO_URI='${MONGO_URI}' 
-                    export PORT='${PORT}' 
-                    export JWT_SECRET='${JWT_SECRET}'
-                    docker compose up -d
+                    ssh -tt -o StrictHostKeyChecking=no ubuntu@103.189.173.46 << 'EOF'
+                        git clone https://github.com/programmingninjas/quectoLink.git
+                        cd quectoLink
+                        export MONGO_URI='${MONGO_URI}' 
+                        export PORT='${PORT}' 
+                        export JWT_SECRET='${JWT_SECRET}'
+                        docker compose up -d
+                    EOF
                     """
                 }
             }
