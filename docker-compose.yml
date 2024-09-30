@@ -1,7 +1,7 @@
 # I modified this compose to work with Jenkins for testing kindly update for local use
 services:
   backend:
-    image: programmingninjas/quectolink-backend:latest
+    image: programmingninjas/quectolink-backend:${BACKEND_VERSION}
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT}
@@ -9,7 +9,7 @@ services:
     ports:
       - "${PORT}:${PORT}"
   frontend:
-    image: programmingninjas/quectolink:latest
+    image: programmingninjas/quectolink:${FRONTEND_VERSION}
     ports:
       - "80:80"
   cache:
