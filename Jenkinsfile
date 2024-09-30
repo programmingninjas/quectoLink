@@ -8,7 +8,7 @@ pipeline {
         PORT = '5000'
         JWT_SECRET = 'Hello'
         REMOTE = '103.189.173.46'
-        API = "http://103.189.173.46"
+        API = "http://103.189.173.46:5000"
     }
 
     stages {
