@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'docker-agent'
+    }
 
     environment {
         MONGO_URI = 'mongodb://mongo:27017/quectolink'
