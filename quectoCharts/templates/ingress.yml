@@ -8,7 +8,7 @@ spec:
   - hosts:
     - quecto.fr.to
     secretName: userapi-tls
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingressClass }}
   rules:
   - host: "quecto.fr.to"
     http:
