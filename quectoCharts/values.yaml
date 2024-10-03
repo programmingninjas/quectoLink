@@ -1,0 +1,24 @@
+appName: quectolink
+namespace: default
+images:
+  backend_image: 
+    name: programmingninjas/quectolink-backend
+    tag: latest
+  frontend_image: 
+    name: programmingninjas/quectolink
+    tag: latest
+  db_image:
+    name: mongo
+    tag: latest
+  cache_image:
+    name: redis
+    tag: alpine
+  ds_image:
+    name: zookeeper
+    tag: latest
+configmap:
+  backend_data:
+    PORT: "5000"
+    MONGO_URI: mongodb://mongo:27017/quectolink
+  frontend_data:
+    IP: https://quecto.fr.to

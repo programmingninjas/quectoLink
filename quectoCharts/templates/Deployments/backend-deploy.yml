@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: backend-deploy
+    app: {{ .Values.appName }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: backend-pod
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      name: backend-pod
+      labels:
+        name: backend-pod
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+       - name: backend
+         image: "{{ .Values.images.backend_image.name }}:{{ .Values.images.backend_image.tag }}"
+         envFrom:
+          - configMapRef:
+              name: backend-config
+          - secretRef:
+              name: quectolink-secret
+         ports:
+          - containerPort: 5000

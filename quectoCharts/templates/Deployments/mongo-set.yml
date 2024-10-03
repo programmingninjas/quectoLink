@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-set
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: mongo-set
+    app: {{ .Values.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongo-pod
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      name: mongo-pod
+      labels:
+        name: mongo-pod
+        app: {{ .Values.appName }}
+    spec:
+      volumes:
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-claim
+      containers:
+      - name: mongo
+        image: "{{ .Values.images.db_image.name }}:{{ .Values.images.db_image.tag }}"
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-storage
+          mountPath: "/data/db"

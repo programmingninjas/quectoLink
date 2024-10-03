@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper-set
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: zookeeper-set
+    app: {{ .Values.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: zookeeper-pod
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      name: zookeeper-pod
+      labels:
+        name: zookeeper-pod
+        app: {{ .Values.appName }}
+    spec:
+      volumes:
+      - name: zookeeper-storage
+        persistentVolumeClaim:
+          claimName: zookeeper-claim
+      containers:
+      - name: zookeeper
+        image: "{{ .Values.images.ds_image.name }}:{{ .Values.images.ds_image.tag }}"
+        ports:
+        - containerPort: 2181
+        volumeMounts:
+        - name: zookeeper-storage
+          mountPath: "/data"

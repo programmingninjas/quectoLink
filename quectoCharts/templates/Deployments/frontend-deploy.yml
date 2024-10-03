@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: frontend-deploy
+    app: {{ .Values.appName }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: frontend-pod
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      name: frontend-pod
+      labels:
+        name: frontend-pod
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: frontend
+        image: "{{ .Values.images.frontend_image.name }}:{{ .Values.images.frontend_image.tag }}"
+        envFrom:
+         - configMapRef:
+             name: frontend-config
+        ports:
+        - containerPort: 80

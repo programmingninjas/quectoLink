@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cache-set
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: cache-set
+    app: {{ .Values.appName }}
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      name: cache-pod
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      name: cache-pod
+      labels:
+        name: cache-pod
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: cache
+        image: "{{ .Values.images.cache_image.name }}:{{ .Values.images.cache_image.tag }}"
+        ports:
+        - containerPort: 6379

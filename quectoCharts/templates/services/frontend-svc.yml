@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: frontend-svc
+    app: {{ .Values.appName }}
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: frontend-pod
+    app: {{ .Values.appName }}

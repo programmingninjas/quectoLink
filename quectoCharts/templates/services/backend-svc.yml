@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: backend-svc
+    app: {{ .Values.appName }}
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    name: backend-pod
+    app: {{ .Values.appName }}
