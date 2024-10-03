@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: backend-config
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | quote }}
 data:
-  MONGO_URI: {{ .Values.configmap.backend_data.MONGO_URI }}
-  PORT: {{ .Values.configmap.backend_data.PORT }}
+  MONGO_URI: {{ .Values.configmap.backend_data.MONGO_URI | quote }}
+  PORT: {{ .Values.configmap.backend_data.PORT | quote }}
