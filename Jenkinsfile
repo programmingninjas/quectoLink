@@ -5,6 +5,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')
+        GITHUB_CREDENTIALS= credentials('githubhubcredentials')
     }
 
     stages {
@@ -65,19 +66,16 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ssh-agent', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     script {
-                        sh "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
-                        sh "ssh-keyscan -H github.com >> ~/.ssh/known_hosts"
-                        sh "chmod 644 ~/.ssh/known_hosts"
-                        sh "git clone git@github.com:programmingninjas/quectoCharts.git"
+                        sh 'git config --global credential.helper store'
+                        sh "echo \"https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com\" > ~/.git-credentials"
+                        sh "git clone https://github.com/programmingninjas/quectoCharts.git"
                         sh "cd quectoCharts"
                         sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
                         sh "git add Chart.yaml"
                         sh "git commit -m 'Update Helm chart version to ${BACKEND_VERSION}'"
                         sh "git push origin main"
                     }
-                }
             }
         }
     }
