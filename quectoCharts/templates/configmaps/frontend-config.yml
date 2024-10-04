@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: frontend-config
-  namespace: {{ .Values.namespace | quote }}
-data:
-  IP: {{ .Values.configmap.frontend_data.IP | quote }}
