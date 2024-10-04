@@ -4,11 +4,6 @@ pipeline {
     }
 
     environment {
-        MONGO_URI = 'mongodb://mongo:27017/quectolink'
-        PORT = '5000'
-        JWT_SECRET = 'Hello'
-        REMOTE = '103.189.173.46'
-        API = "http://103.189.173.46:5000"
         DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')
     }
 
@@ -49,8 +44,8 @@ pipeline {
                     steps {
                         script {
                             dir('backend') {
-                                sh "docker build -t programmingninjas/argolink-backend:${env.BACKEND_VERSION} ."
-                                sh 'docker push programmingninjas/argolink-backend:${env.BACKEND_VERSION}'
+                                sh "docker build -t programmingninjas/argolink-backend:${BACKEND_VERSION} ."
+                                sh 'docker push programmingninjas/argolink-backend:${BACKEND_VERSION}'
                             }
                         }
                     }
@@ -59,8 +54,8 @@ pipeline {
                     steps {
                         script {
                             dir('frontend') {
-                                sh "docker build -t programmingninjas/argolink-frontend:${env.FRONTEND_VERSION} ."
-                                sh 'docker push programmingninjas/argolink-frontend:${env.FRONTEND_VERSION}'
+                                sh "docker build -t programmingninjas/argolink-frontend:${FRONTEND_VERSION} ."
+                                sh 'docker push programmingninjas/argolink-frontend:${FRONTEND_VERSION}'
                             }
                         }
                     }
@@ -72,12 +67,12 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ssh-agent', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     script {
-                        def commands = """
-                            cd quectoLink
-                            git pull origin master
-                            sudo MONGO_URI='${MONGO_URI}' PORT='${PORT}' JWT_SECRET='${JWT_SECRET}' BACKEND_VERSION='${BACKEND_VERSION}' FRONTEND_VERSION='${FRONTEND_VERSION}' API='${API}' docker compose up -d --build
-                        """
-                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${REMOTE} '${commands}'"
+                        sh "git clone git@github.com:programmingninjas/quectoCharts.git"
+                        sh "cd quectoCharts"
+                        sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
+                        sh "git add Chart.yaml"
+                        sh "git commit -m 'Update Helm chart version to ${BACKEND_VERSION}'"
+                        sh "git push origin main"
                     }
                 }
             }
