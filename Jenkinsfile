@@ -77,6 +77,7 @@ pipeline {
                                 sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
                                 sh "sed -i 's/^    tag: .*/    tag: ${BACKEND_VERSION}/' values.yaml"
                                 sh "git add Chart.yaml"
+                                sh "git add values.yaml"
                                 sh "git commit -m 'Update Helm chart version to ${BACKEND_VERSION}'"
                                 sh "git push origin main"     
                         }
