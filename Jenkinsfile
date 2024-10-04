@@ -69,6 +69,8 @@ pipeline {
                     script {
                         sh 'git config --global credential.helper store'
                         sh "echo \"https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com\" > ~/.git-credentials"
+                        sh 'git config --global user.email "programing.ninja0@gmail.com"'
+                        sh 'git config --global user.name "Ayan Khan"'
                         sh "git clone https://github.com/programmingninjas/quectoCharts.git"
                         dir('quectoCharts/quectoCharts'){
                                 sh "ls"
