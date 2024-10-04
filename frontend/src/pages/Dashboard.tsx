@@ -12,6 +12,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   let authToken = user?.token;
   let id = user?._id;
+  
   const handleSubmit = async () => {
     if (!user) {
       navigate('/login');
@@ -44,8 +45,9 @@ export default function Dashboard() {
       toast.error('Error occurred while shortening URL');
     }
   };
+  
   return (
-    <div className="bg-gray-50 rounded-lg py-12 lg:py-16">
+    <div className="bg-gray-50 rounded-lg py-12 lg:py-16 relative">
       <div className="container px-3">
         <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
           <div className="space-y-4">
@@ -76,7 +78,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      <div className="absolute bottom-4 right-4 text-sm text-gray-500">
+        Version 0.0.3
+      </div>
     </div>
   )
 }
-
