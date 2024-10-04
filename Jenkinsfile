@@ -69,10 +69,10 @@ pipeline {
                     script {
                         sh 'git config --global credential.helper store'
                         sh "echo \"https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com\" > ~/.git-credentials"
-                        sh "ls"
+                        sh "pwd"
                         sh "git clone https://github.com/programmingninjas/quectoCharts.git"
                         sh "cd quectoCharts"
-                        sh "ls"
+                        sh "pwd"
                         sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
                         sh "git add Chart.yaml"
                         sh "git commit -m 'Update Helm chart version to ${BACKEND_VERSION}'"
