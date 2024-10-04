@@ -1,4 +1,4 @@
-# I modified this compose to work with Jenkins for testing kindly update for local use
+# I modified this compose to work with Jenkins for testing kindly update for local use.
 services:
   backend:
     image: programmingninjas/quectolink-backend:${BACKEND_VERSION}
