@@ -9,6 +9,7 @@ pipeline {
         JWT_SECRET = 'Hello'
         REMOTE = '103.189.173.46'
         API = "http://103.189.173.46:5000"
+        DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')
     }
 
     stages {
@@ -35,13 +36,21 @@ pipeline {
             }
         }
 
+        stage('Login to Docker Hub') {      	
+            steps{                       	
+            	sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+            	echo 'Login Completed'      
+            }           
+        }
+
         stage('Build') {
             parallel {
                 stage('Build Backend') {
                     steps {
                         script {
                             dir('backend') {
-                                sh "docker build -t programmingninjas/quectolink-backend:${env.BACKEND_VERSION} ."
+                                sh "docker build -t programmingninjas/argolink-backend:${env.BACKEND_VERSION} ."
+                                sh 'docker push programmingninjas/argolink-backend:${env.BACKEND_VERSION}'
                             }
                         }
                     }
@@ -50,7 +59,8 @@ pipeline {
                     steps {
                         script {
                             dir('frontend') {
-                                sh "docker build -t programmingninjas/quectolink:${env.FRONTEND_VERSION} ."
+                                sh "docker build -t programmingninjas/argolink-frontend:${env.FRONTEND_VERSION} ."
+                                sh 'docker push programmingninjas/argolink-frontend:${env.FRONTEND_VERSION}'
                             }
                         }
                     }
@@ -75,6 +85,9 @@ pipeline {
     }
 
     post {
+        always {  
+    	    sh 'docker logout'     
+        }  
         success {
             echo 'Deployment successful!'
         }
