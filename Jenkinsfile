@@ -70,7 +70,7 @@ pipeline {
                         sh 'git config --global credential.helper store'
                         sh "echo \"https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com\" > ~/.git-credentials"
                         sh "git clone https://github.com/programmingninjas/quectoCharts.git"
-                        dir('quectoCharts'){
+                        dir('quectoCharts/quectoCharts'){
                                 sh "ls"
                                 sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
                                 sh "git add Chart.yaml"
