@@ -67,6 +67,7 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ssh-agent', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     script {
+                        sh "ls"
                         sh "git clone git@github.com:programmingninjas/quectoCharts.git"
                         sh "cd quectoCharts"
                         sh "sed -i 's/^version: .*/version: ${BACKEND_VERSION}/' Chart.yaml"
