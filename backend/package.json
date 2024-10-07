@@ -1,6 +1,6 @@
 {
   "name": "quectolink",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A distributed and scalable system for url shortening",
   "main": "server.js",
   "scripts": {
