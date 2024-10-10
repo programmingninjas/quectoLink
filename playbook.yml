@@ -214,13 +214,24 @@
   tasks:
     - name: Configure crictl runtime endpoint
       command: crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
-
+      
 - name: Initialize Kubernetes Cluster on Master
   hosts: master  
   become: yes
   tasks:
-    - name: Initialize kubeadm
+    - name: Check if admin.conf file exists
+      stat:
+        path: /etc/kubernetes/admin.conf
+      register: kubeadm_stat
+
+    - name: Print cluster info check result
+      debug:
+        msg: "Kubernetes cluster is already initialized."
+      when: kubeadm_stat.rc == 0
+
+    - name: Initialize kubeadm if cluster is not initialized
       command: kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{ ansible_host }} --node-name master
+      when: kubeadm_stat.rc != 0
 
 - name: Set up Kubernetes configuration on Master
   hosts: master  
@@ -245,7 +256,8 @@
         path: "{{ HOME }}/.kube/config"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: 0600
+        mode: '0600'
+
 
 - name: Get the kubeadm join command
   hosts: master
@@ -271,8 +283,14 @@
   hosts: worker
   become: yes
   tasks:
+    - name: Check if kublet is already configured
+      stat:
+        path: /etc/kubernetes/kubelet.conf
+      register: kubelet_conf
+
     - name: Join the worker node to the cluster
       command: "{{ hostvars['master'].join_command.stdout }}"
+      when: not kubelet_conf.stat.exists
 
 - name: Install NGINX Ingress Controller on Master
   hosts: master  
