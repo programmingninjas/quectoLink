@@ -231,7 +231,7 @@
 
     - name: Initialize kubeadm if cluster is not initialized
       command: kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{ ansible_host }} --node-name master
-      when: kubeadm_stat.rc
+      when: not kubeadm_stat
 
 - name: Set up Kubernetes configuration on Master
   hosts: master  
