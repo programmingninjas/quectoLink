@@ -176,7 +176,7 @@
       register: file_stat
 
     - name: Install Kubernetes GPG key
-      command: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes.gpg || true
+      command: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes.gpg
       when: not file_stat.stat.exists
 
     - name: Set permissions on Kubernetes GPG key
@@ -224,28 +224,33 @@
 
 - name: Set up Kubernetes configuration on Master
   hosts: master  
-  become: yes  # isse root hogya toh $HOME root bn gya user pe aya he nhi kubeconfig
+  become: yes
+  vars:
+    HOME: "/home/ubuntu"
   tasks:
     - name: Create .kube directory
       file:
-        path: "{{ ansible_env.HOME }}/.kube"
+        path: "{{ HOME }}/.kube"
         state: directory
         mode: '0755'
 
     - name: Copy admin.conf to kube config
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: "{{ ansible_env.HOME }}/.kube/config"
+        dest: "{{ HOME }}/.kube/config"
         remote_src: yes  
 
     - name: Change ownership of kube config
       file:
-        path: $HOME/.kube/config
+        path: "{{ HOME }}/.kube/config"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: 0644
+        mode: 0600
 
-    - name: Get the kubeadm join command
+- name: Get the kubeadm join command
+  hosts: master
+  tasks:
+    - name: Saving it into join_command var to use in worker
       command: kubeadm token create --print-join-command
       register: join_command
 
@@ -255,14 +260,12 @@
     - name: Apply Flannel configuration
       command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
-- name: Install Helm and NGINX Ingress Controller on Master
-  hosts: master  
-  become: yes  
+- name: Install Helm on Master
+  hosts: master
+  become: yes    
   tasks:
     - name: Install Helm using Snap
       command: snap install helm --classic
-    - name: Install or upgrade ingress-nginx using Helm
-      command: helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
 
 - name: Join worker nodes to the cluster
   hosts: worker
@@ -270,3 +273,9 @@
   tasks:
     - name: Join the worker node to the cluster
       command: "{{ hostvars['master'].join_command.stdout }}"
+
+- name: Install NGINX Ingress Controller on Master
+  hosts: master  
+  tasks:
+    - name: Install ingress-nginx using Helm
+      command: helm install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace --set controller.kind=DaemonSet --set controller.hostNetwork=true
