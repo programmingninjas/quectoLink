@@ -229,10 +229,6 @@
         msg: "Kubernetes cluster is already initialized."
       when: kubeadm_stat.stat.exists
 
-    - name: GU
-      debug:
-        msg: "{{ ansible_host }}"
-
     - name: Initialize kubeadm if cluster is not initialized
       command: kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{ ansible_host }} --node-name master
       when: not kubeadm_stat.stat.exists
@@ -279,13 +275,6 @@
     - name: Apply Flannel configuration
       command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
-- name: Install Helm on Master
-  hosts: master
-  become: yes    
-  tasks:
-    - name: Install Helm using Snap
-      command: snap install helm --classic
-
 - name: Join worker nodes to the cluster
   hosts: worker
   become: yes
@@ -298,9 +287,3 @@
     - name: Join the worker node to the cluster
       command: "{{ hostvars['master'].join_command.stdout }}"
       when: not kubelet_conf.stat.exists
-
-- name: Install NGINX Ingress Controller on Master #skip if already installed
-  hosts: master  
-  tasks:
-    - name: Install ingress-nginx using Helm
-      command: helm install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace --set controller.kind=DaemonSet --set controller.hostNetwork=true
