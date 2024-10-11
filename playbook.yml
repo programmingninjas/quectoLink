@@ -1,3 +1,4 @@
+#kube is a group of master and worker node
 - name: Disable Swap
   hosts: kube
   become: yes
