@@ -1,6 +1,6 @@
 {
   "name": "quectolink",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A distributed and scalable system for url shortening",
   "main": "server.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.3",
     "node-zookeeper-client": "^1.1.3",
+    "prom-client": "^15.1.3",
     "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },

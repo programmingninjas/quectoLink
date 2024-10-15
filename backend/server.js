@@ -1,6 +1,7 @@
 const express = require('express');
 const { errorHandler } = require('./middleware/errorMiddleware');
 const { loggerMiddleware } = require('./middleware/loggerMiddleware');
+const { metricsMiddleware, metricsEndpoint } = require('./middleware/metricsMiddleware');
 const dotenv = require('dotenv').config();
 const colors = require('colors');
 const connectDB = require('./database/db');
@@ -19,7 +20,9 @@ app.use(express.urlencoded({extended:false}));
 app.use(cors());
 
 app.use(loggerMiddleware);
+app.use(metricsMiddleware);
 
+app.get('/metrics', metricsEndpoint);
 app.use('/api/link',require('./routes/linkRoutes'));
 app.use('/api/user',require('./routes/userRoutes'));
 
