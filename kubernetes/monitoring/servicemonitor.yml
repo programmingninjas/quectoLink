@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: quectolink
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: quectolink
+      name: backend-svc
+  jobLabel: quectolink
+  namespaceSelector:
+    matchNames:
+      - default
+  endpoints:
+    - port: server    
+      path: /metrics   
+      interval: 2s     

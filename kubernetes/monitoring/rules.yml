@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: resource-usage-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: cpu-usage-group  
+      rules: 
+        - alert: HighCpuUsage  # Alert name 
+          expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 50  
+          for: 10s   
+          labels: 
+            severity: warning   
+            source: prometheus   
+          annotations: 
+            description: "This alert fires when CPU usage exceeds 50% for an instance." 
+            summary: "High CPU usage {{ $value }}% detected on instance {{ $labels.instance }}."

@@ -1,0 +1,17 @@
+curl -sfL https://get.k3s.io | sh -
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+mkdir .kube
+cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+chmod 600 ~/.kube/config
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.4/manifests/install.yaml
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode
+kubectl apply -f userapi-tls.yml
+kubectl apply -f servicemonitor.yml
+sudo snap install helm --classic
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus --namespace monitoring --create-namespace prometheus-community/kube-prometheus-stack
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+kubectl get svc
+
