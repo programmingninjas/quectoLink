@@ -17,6 +17,6 @@ alertmanager:
     receivers:
       - name: 'telepush'
         webhook_configs:
-          - url: 'https://telepush.dev/api/inlets/alertmanager/<token>'
+          - url: 'https://telepush.dev/api/inlets/alertmanager/ac7e81'
       - name: 'null'  
         webhook_configs: []

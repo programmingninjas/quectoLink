@@ -1,0 +1,8 @@
+mongodb:
+  uri: mongodb://mongo.default.svc.cluster.local:27017
+
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: prometheus
+  namespace: monitoring
